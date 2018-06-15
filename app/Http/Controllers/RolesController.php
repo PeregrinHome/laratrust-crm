@@ -7,6 +7,7 @@ use App\Models\Users\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use function MongoDB\BSON\toJSON;
 
 class RolesController extends Controller
 {
@@ -157,7 +158,7 @@ class RolesController extends Controller
 
         return $response;
     }
-    public function selectedDestroy(Request $request)
+    public function actionsDestroy(Request $request)
     {
         $frd = $request->only('roles');
 

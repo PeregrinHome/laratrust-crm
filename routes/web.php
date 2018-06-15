@@ -20,8 +20,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', 'RolesController');
     Route::resource('permissions', 'PermissionsController');
 
-    Route::delete('permissions', 'PermissionsController@selectedDestroy')->name('permissions.selected.destroy');
-    Route::delete('roles', 'RolesController@selectedDestroy')->name('roles.selected.destroy');
+    Route::delete('permissions', 'PermissionsController@actionsDestroy')->name('permissions.actions.destroy');
+    Route::delete('roles', 'RolesController@actionsDestroy')->name('roles.actions.destroy');
 
 //    Route::group(['middleware' => ['permission:users__roles--update']], function () {
         Route::patch('users/{user}/roles/update', 'UsersController@rolesUpdate')->name('users.roles.update');

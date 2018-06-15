@@ -25,7 +25,7 @@
     <div class="container pt-3 pb-5">
         <div class="row justify-content-center">
             <div class="col-12">
-                {!! Form::open(['route' => 'roles.selected.destroy', 'method' => 'DELETE', 'class' => 'js-ajax']) !!}
+                {!! Form::open(['route' => 'roles.actions.destroy', 'method' => 'DELETE', 'class' => 'js-ajax']) !!}
                 <div class="btn-group mb-2 mt-2">
                     <a href="#" onclick="$('input[type=checkbox]').attr('checked','checked'); return false;"
                        class="btn btn-outline-secondary">+</a>

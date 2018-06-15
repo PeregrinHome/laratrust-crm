@@ -156,7 +156,7 @@ class PermissionsController extends Controller
 
         return $response;
     }
-    public function selectedDestroy(Request $request)
+    public function actionsDestroy(Request $request)
     {
         $frd = $request->only('permissions');
 
