@@ -1,45 +1,49 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Users;
 
 use App\Models\Users\Permission;
 use App\Models\Users\Role;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use function MongoDB\BSON\toJSON;
+use PHPUnit\Util\Json;
+use Illuminate\Database\Query\Builder;
+use App\Http\Controllers\Controller;
 
-class RolesController extends Controller
+class UserController extends Controller
 {
+    protected $users;
     protected $roles;
-    protected $permissions;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(Role $roles, Permission $permissions)
+
+    public function __construct(User $users, Role $roles)
     {
-        $this->roles = $roles;
-        $this->permissions = $permissions;
-        Route::model('role',Role::class);
+        $this->users  = $users;
+        $this->roles  = $roles;
+        Route::model('user',User::class);
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index(Request $request)
     {
-        $frd   = $request->all();
-        $roles = $this
-            ->roles
-            ->filter($frd)
-            ->orderby('name', 'ASC')
-            ->paginate($frd['perPage'] ?? $this->roles->getPerPage())
-            ->appends($frd);
 
-        return view('roles.index', compact('roles', 'frd'));
+        $frd   = $request->all();
+        $users = $this
+            ->users
+            ->filter($frd)
+            ->orderby('f_name', 'ASC')
+            ->paginate($frd['perPage'] ?? $this->users->getPerPage())
+            ->appends($frd);
+//        $users = $this->users->paginate(10);
+        return view('users.index', compact('users', 'frd'));
     }
 
     /**
@@ -49,7 +53,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        return view('users.create');
     }
 
     /**
@@ -61,16 +65,20 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255|unique:roles',
-            'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
+            'f_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'sex' => 'required|string|max:10',
+            'password' => 'required|string|min:6|confirmed',
+            'l_name' => 'max:255',
+            'm_name' => 'max:255',
         ]);
         $frd = $request->all();
-        $role = $this->roles->create($frd);
+        $user = $this->users->create($frd);
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Роль «' . $role->getDisplayName() . '» успешно создан.',
+            'text' => 'Профиль пользователя «' . $user->f_name . '» успешно создан.',
         ];
         if ($request->ajax())
         {
@@ -87,45 +95,47 @@ class RolesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Role $role
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show(User $user)
     {
-        return view('roles.show', compact('role'));
+        return view('users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Role $role
+     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(User $user)
     {
-        return view('roles.edit', compact('role'));
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param Role $role
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, User $user)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
+            'f_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
+            'sex' => 'required|string|max:10',
+            'l_name' => 'max:255',
+            'm_name' => 'max:255',
         ]);
         $frd = $request->all();
-        $role->update($frd);
+        $user->update($frd);
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Роль «' . $role->getDisplayName() . '» успешно изменен.',
+            'text' => 'Профиль пользователя «' . $user->f_name . '» успешно обновлен',
         ];
 
         if ($request->ajax())
@@ -141,32 +151,17 @@ class RolesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param Role $role
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
-    public function destroy(Role $role)
+    public function destroy(User $user)
     {
-        $this->roles->destroy($role->getKey());
+        $this->users->destroy($user->getKey());
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Роль успешно удалена.',
-        ];
-        $response = response()->json($flashMessage);
-
-        return $response;
-    }
-    public function actionsDestroy(Request $request)
-    {
-        $frd = $request->only('roles');
-
-        $this->roles->destroy($frd['roles']);
-
-        $flashMessage = [
-            'type' => 'success',
-            'text' => 'Роли успешно удалены.',
+            'text' => 'Профиль пользователя успешно удален.',
         ];
         $response = response()->json($flashMessage);
 
@@ -175,46 +170,45 @@ class RolesController extends Controller
 
     /**
      * @param Request $request
-     * @param Role    $role
+     * @param User    $user
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function permissions(Request $request, Role $role)
+    public function roles(Request $request, User $user)
     {
         $frd = $request->all();
 
-        $permissions = $this->permissions
-            ->filter($frd)
+        $roles = $this->roles
+            ->filter($frd ?? [])
             ->orderby('name', 'ASC')
             ->paginate($frd['perPage'] ?? $this->roles->getPerPage())
             ->appends($frd);
-        return view('roles.permissions', compact('permissions', 'role', 'frd'));
+
+        return view('users.roles', compact('roles', 'user', 'frd'));
     }
 
     /**
      * @param Request $request
-     * @param Role    $role
-     *
+     * @param User $user
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
-    public function permissionsUpdate(Request $request, Role $role)
+    public function rolesUpdate(Request $request, User $user)
     {
+        $frd = $request->only(['roles']);
 
-        $frd = $request->only(['permissions']);
-
-        if (isset($frd['permissions']['off']))
+        if (isset($frd['roles']['off']))
         {
-            $role->detachPermissions(array_keys($frd['permissions']['off']));
+            $user->detachRoles(array_keys($frd['roles']['off']));
         }
 
-        if (isset($frd['permissions']['on']))
+        if (isset($frd['roles']['on']))
         {
-            $role->attachPermissions(array_keys($frd['permissions']['on']));
+            $user->attachRoles(array_keys($frd['roles']['on']));
         }
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Разрешения для роли «' . $role->getDisplayName() . '» успешно обновлены',
+            'text' => 'Роли для пользователя «' . $user->getName() . '» успешно обновлены',
         ];
 
         if ($request->ajax())

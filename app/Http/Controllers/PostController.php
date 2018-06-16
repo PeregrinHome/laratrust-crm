@@ -2,42 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users\Permission;
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Models\Users\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-class PermissionsController extends Controller
+class PostController extends Controller
 {
-    protected $permissions;
-
+    protected $users;
+    protected $posts;
     /**
      * Create a new controller instance.
      *
-     * @param Permission $permissions
+     * @return void
      */
-    public function __construct(Permission $permissions)
+    public function __construct(Post $posts, User $users)
     {
-        $this->permissions = $permissions;
-        Route::model('permission',Permission::class);
+        $this->users = $users;
+        $this->posts = $posts;
+        Route::model('post',Post::class);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $frd   = $request->all();
-        $permissions = $this
-            ->permissions
+        $posts = $this
+            ->posts
             ->filter($frd)
-            ->orderby('name', 'ASC')
-            ->paginate($frd['perPage'] ?? $this->permissions->getPerPage())
+            ->paginate($frd['perPage'] ?? $this->posts->getPerPage())
             ->appends($frd);
 
-        return view('permissions.index', compact('permissions', 'frd'));
+        return view('posts.index', compact('posts', 'frd'));
     }
 
     /**
@@ -47,7 +48,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        return view('permissions.create');
+        return view('posts.create');
     }
 
     /**
@@ -59,16 +60,15 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255|unique:permissions',
-            'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
+            'name' => 'required|string|max:255'
         ]);
         $frd = $request->all();
-        $permission = $this->permissions->create($frd);
+        $frd['user_id'] = Auth::user()->getKey();
+        $post = $this->posts->create($frd);
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Разрешение «' . $permission->getDisplayName() . '» успешно создано.',
+            'text' => 'Пост «' . $post->name . '» успешно создан.',
         ];
         if ($request->ajax())
         {
@@ -85,45 +85,43 @@ class PermissionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Permission $permission
+     * @param Post $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Permission $permission)
+    public function show(Post $post)
     {
-        return view('permissions.show', compact('permission'));
+        return view('posts.show', compact('post'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Permission $permission
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Permission $permission)
+    public function edit(Post $post)
     {
-        return view('permissions.edit', compact('permission'));
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param Permission $permission
+     * @param Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function update(Request $request, Post $post)
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
         ]);
         $frd = $request->all();
-        $permission->update($frd);
+        $post->update($frd);
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Разрешение «' . $permission->getDisplayName() . '» успешно создано.',
+            'text' => 'Пост «' . $post->getName(). '» успешно обновлен',
         ];
 
         if ($request->ajax())
@@ -141,30 +139,16 @@ class PermissionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Permission $permission
+     * @param Post $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Permission $permission)
+    public function destroy(Post $post)
     {
-        $this->permissions->destroy($permission->getKey());
+        $this->users->destroy($post->getKey());
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Разрешение успешно удален.',
-        ];
-        $response = response()->json($flashMessage);
-
-        return $response;
-    }
-    public function actionsDestroy(Request $request)
-    {
-        $frd = $request->only('permissions');
-
-        $this->permissions->destroy($frd['permissions']);
-
-        $flashMessage = [
-            'type' => 'success',
-            'text' => 'Разрешения успешно удалены.',
+            'text' => 'Пост успешно удален.',
         ];
         $response = response()->json($flashMessage);
 
