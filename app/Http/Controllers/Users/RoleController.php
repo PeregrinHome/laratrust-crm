@@ -64,7 +64,7 @@ class RoleController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255|unique:roles',
             'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
+            'description' => 'max:255'
         ]);
         $frd = $request->all();
         $role = $this->roles->create($frd);

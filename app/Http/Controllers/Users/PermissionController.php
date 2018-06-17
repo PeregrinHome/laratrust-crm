@@ -62,14 +62,20 @@ class PermissionController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255|unique:permissions',
             'display_name' => 'string|max:255',
-            'description' => 'string|max:255'
+            'description' => 'max:255'
         ]);
         $frd = $request->all();
-        $permission = $this->permissions->create($frd);
+        if(isset($frd['crud'])){
+            (new Permission)->createCrud($frd['name'], $frd['display_name'], $frd['description']);
+            $name = $frd['display_name']." - CRUD";
+        }else{
+            $permission = $this->permissions->create($frd);
+            $name = $permission->getDisplayName();
+        }
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Разрешение «' . $permission->getDisplayName() . '» успешно создано.',
+            'text' => 'Разрешение «' . $name . '» успешно создано.',
         ];
         if ($request->ajax())
         {

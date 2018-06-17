@@ -10,6 +10,14 @@
     'class'=>'',
     'label'=>'Отображаемое название',
     ])
+    @if(empty($permission))
+        @include('forms._checkbox',[
+            'name' => 'crud',
+            'formClass' => 'form-group',
+            'label' => "Создать CRUD",
+            'checked' => false,
+        ])
+    @endif
     @include('forms._textarea',[
     'name'=>'description',
     'class'=>'',
