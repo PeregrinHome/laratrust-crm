@@ -1,4 +1,4 @@
-<div class="form-group {{ $errors->has($name) ? ' has-danger' : '' }}">
+<div class="form-group {{ $errors->has($name) ? ' has-danger' : '' }} {{ $formClass ?? null }}">
     @isset($label)
         <label class="form-control-label"
                for="input_{{ $type  ?? 'text' }}_{{ ($name) }}">{!! $label !!}&nbsp;</label>
@@ -8,7 +8,7 @@
     $list,
     old($name) ?? ($value ?? null),
     [
-    'class'=>'form-control form-control '
+    'class'=>'form-control '
     .($errors->has(str_replace(['[',']'],['.',''],$name)) ? ' is-invalid ' : '')
     .($class ?? ''),
     'required'=>(isset($required) ? 'required' : null),

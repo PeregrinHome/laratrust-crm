@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Models\Users\Permission;
 use App\Models\Users\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use function MongoDB\BSON\toJSON;
 use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
@@ -23,7 +21,6 @@ class RoleController extends Controller
     {
         $this->roles = $roles;
         $this->permissions = $permissions;
-        Route::model('role',Role::class);
     }
     /**
      * Display a listing of the resource.

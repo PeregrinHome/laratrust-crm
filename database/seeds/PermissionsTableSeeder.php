@@ -12,10 +12,8 @@ class PermissionsTableSeeder extends Seeder
      */
     public function run()
     {
-//        (new Permission)->createCrud('posts', 'Posts');
-//        (new Permission)->createCrud('comments', 'Comments');
-//        foreach(range(1, 50) as $index){
-//            (new Permission)->createCrud('permission'.$index, 'Permission'.$index);
-//        }
+        foreach(range(1, 50) as $index){
+            (new Permission)->createCrud('permission'.$index, 'Permission'.$index);
+        }
     }
 }

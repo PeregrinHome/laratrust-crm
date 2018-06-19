@@ -21,6 +21,8 @@ class CreatePhonesTable extends Migration
             $table->string('data-buy');
             // Название телефона
             $table->string('name');
+            // Номер телефона
+            $table->string('number');
             $table->timestamps();
         });
         Schema::table('phones', function (Blueprint $table) {
@@ -38,10 +40,10 @@ class CreatePhonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('phones');
         Schema::table('phones', function (Blueprint $table) {
             $table->dropForeign('phones_user_id_foreign');
             $table->dropColumn('user_id');
         });
+        Schema::dropIfExists('phones');
     }
 }

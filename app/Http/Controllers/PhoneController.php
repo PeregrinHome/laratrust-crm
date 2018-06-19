@@ -7,14 +7,30 @@ use Illuminate\Http\Request;
 
 class PhoneController extends Controller
 {
+
+    protected $phones;
+
+    public function __construct(Phone $phones)
+    {
+        $this->phones = $phones;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $frd   = $request->all();
+        $roles = $this
+            ->phones
+            ->filter($frd)
+            ->orderby('name', 'ASC')
+            ->paginate($frd['perPage'] ?? $this->roles->getPerPage())
+            ->appends($frd);
+
+        return view('roles.index', compact('roles', 'frd'));
     }
 
     /**

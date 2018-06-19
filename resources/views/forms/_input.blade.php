@@ -1,4 +1,4 @@
-<div class="form-group  {{ $errors->has($name) ? ' has-danger' : '' }}">
+<div class="form-group  {{ $errors->has($name) ? ' has-danger' : '' }} {{ $formClass ?? null }}">
     @isset($label)
     <label class="form-control-label"
            for="input_{{ $type  ?? 'text'
@@ -9,9 +9,10 @@
     $name,
     old($name) ?? ($value ?? null),
     [
-    'required'=>(isset($required) ? 'required' : null),
+    'required'=>(isset($required) ? true : null),
+    'autofocus'=>(isset($autofocus) ? true : null),
     'id'=>'input_'.($type ?? 'text').'_'.str_slug($name),
-    'class'=>'form-control form-control '
+    'class'=>'form-control '
     .($errors->has($name) ? ' is-invalid ' : '')
     .($class ?? ''),
     'placeholder'=>($placeholder ?? null),

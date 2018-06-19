@@ -19,7 +19,6 @@ class PermissionController extends Controller
     public function __construct(Permission $permissions)
     {
         $this->permissions = $permissions;
-        Route::model('permission',Permission::class);
     }
 
     /**

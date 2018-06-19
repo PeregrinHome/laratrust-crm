@@ -33,7 +33,7 @@
     ])
     @include('forms._input',[
     'name'=>'phone',
-    'class'=>'js-phone-you',
+    'class'=>'js-mask-phone',
     'label'=>'Телефон',
     'type'=>'tel',
     'required'=>true,

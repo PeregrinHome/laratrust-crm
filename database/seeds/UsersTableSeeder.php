@@ -18,21 +18,21 @@ class UsersTableSeeder extends Seeder
         foreach(range(1, 100) as $index){
             User::create([
                 'f_name' => $faker->firstNameMale,
+                'l_name' => $faker->lastName,
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->email,
                 'sex' => 'male',
                 'password' => $faker->password,
-                'l_name' => $faker->lastName,
             ]);
         }
         foreach(range(1, 100) as $index){
             User::create([
                 'f_name' => $faker->firstNameFemale,
+                'l_name' => $faker->lastName,
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->email,
                 'sex' => 'female',
                 'password' => $faker->password,
-                'l_name' => $faker->lastName,
             ]);
         }
     }

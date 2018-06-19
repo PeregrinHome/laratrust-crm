@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Models\Users\Permission;
 use App\Models\Users\Role;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\Util\Json;
-use Illuminate\Database\Query\Builder;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -22,7 +17,6 @@ class UserController extends Controller
     {
         $this->users  = $users;
         $this->roles  = $roles;
-        Route::model('user',User::class);
     }
 
     /**
@@ -66,19 +60,20 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'f_name' => 'required|string|max:255',
+            'l_name' => 'max:255',
+            'm_name' => 'max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'sex' => 'required|string|max:10',
             'password' => 'required|string|min:6|confirmed',
-            'l_name' => 'max:255',
-            'm_name' => 'max:255',
         ]);
         $frd = $request->all();
+
         $user = $this->users->create($frd);
 
         $flashMessage = [
             'type' => 'success',
-            'text' => 'Профиль пользователя «' . $user->f_name . '» успешно создан.',
+            'text' => 'Профиль пользователя «' . $user->getName() . '» успешно создан.',
         ];
         if ($request->ajax())
         {

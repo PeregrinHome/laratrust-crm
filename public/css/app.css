@@ -22,3 +22,15 @@ body {
   padding-bottom: 100px;
 }
 
+@media (max-width: 670px) {
+  .pagination > li {
+    display: none;
+  }
+
+  .pagination > li:first-child,
+  .pagination > li:last-child,
+  .pagination > li.active {
+    display: inline-block;
+  }
+}
+

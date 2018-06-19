@@ -40,4 +40,4 @@ $('form.js-ajax').on('submit', function(event) {
 
     return false; // prevent send form
 });
-$('.js-phone-you').mask('+0(000)000-00-00');
+$('.js-mask-phone').mask('+0(000)000-00-00');
