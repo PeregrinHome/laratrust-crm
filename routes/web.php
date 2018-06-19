@@ -16,8 +16,9 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('users', 'Users\UserController');
-//    Route::resource('posts', 'PostController');
+    Route::resource('posts', 'PostController');
     Route::resource('roles', 'Users\RoleController');
+    Route::resource('phones', 'PhoneController');
     Route::resource('permissions', 'Users\PermissionController');
 
     Route::delete('permissions', 'Users\PermissionController@actionsDestroy')->name('permissions.actions.destroy');

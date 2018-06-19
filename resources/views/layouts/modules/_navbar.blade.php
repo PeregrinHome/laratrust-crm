@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">Главная</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -22,18 +22,17 @@
                     </div>
                 </li>
 
-            {{--<!-- Не удалять, пригодится на практике -->--}}
-                {{--<li class="nav-item dropdown">--}}
-                    {{--<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
-                        {{--Посты--}}
-                    {{--</a>--}}
-                    {{--<div class="dropdown-menu" aria-labelledby="navbarDropdown">--}}
-                        {{--<a class="dropdown-item" href="{{ route('posts.index') }}">Список</a>--}}
-                        {{--@if(!Auth::user()->can(['admin']))--}}
-                            {{--<a class="dropdown-item" href="{{ route('posts.create') }}">Создать</a>--}}
-                        {{--@endif--}}
-                    {{--</div>--}}
-                {{--</li>--}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Посты
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('posts.index') }}">Список</a>
+                        @if(!Auth::user()->can(['admin']))
+                            <a class="dropdown-item" href="{{ route('posts.create') }}">Создать</a>
+                        @endif
+                    </div>
+                </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
