@@ -58,6 +58,18 @@
                         </form>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ LaravelLocalization::getCurrentLocaleName() }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            @if(LaravelLocalization::getCurrentLocaleName() !== $properties['name'])
+                            <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">{{ $properties['name'] }}</a>
+                            @endif
+                        @endforeach
+                    </div>
+                </li>
             @endguest
         </ul>
     </div>

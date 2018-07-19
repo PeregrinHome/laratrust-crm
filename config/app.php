@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,6 +165,9 @@ return [
 
         App\Providers\FakerServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        App\Providers\ConfigServiceProvider::class,
     ],
 
     /*
@@ -219,6 +222,8 @@ return [
         'Laratrust'   => Laratrust\LaratrustFacade::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ],
 
 ];

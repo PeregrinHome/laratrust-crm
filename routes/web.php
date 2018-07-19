@@ -11,18 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', 'Users\UserController');
-    Route::resource('posts', 'PostController');
-    Route::resource('roles', 'Users\RoleController');
-    Route::resource('permissions', 'Users\PermissionController');
+Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::group(['middleware' => ['auth']], function () {
+        Route::resource('users', 'Users\UserController');
+        Route::resource('posts', 'PostController');
+        Route::resource('roles', 'Users\RoleController');
+        Route::resource('permissions', 'Users\PermissionController');
 
-    Route::delete('permissions', 'Users\PermissionController@actionsDestroy')->name('permissions.actions.destroy');
-    Route::delete('roles', 'Users\RoleController@actionsDestroy')->name('roles.actions.destroy');
-    Route::delete('users', 'Users\UserController@actionsDestroy')->name('users.actions.destroy');
+        Route::delete('permissions', 'Users\PermissionController@actionsDestroy')->name('permissions.actions.destroy');
+        Route::delete('roles', 'Users\RoleController@actionsDestroy')->name('roles.actions.destroy');
+        Route::delete('users', 'Users\UserController@actionsDestroy')->name('users.actions.destroy');
 
 //    Route::group(['middleware' => ['permission:users__roles--update']], function () {
         Route::patch('users/{user}/roles/update', 'Users\UserController@rolesUpdate')->name('users.roles.update');
@@ -33,7 +34,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('roles/{role}/permissions', 'Users\RoleController@permissions')->name('roles.permissions');
 //    });
 
-});
-Auth::routes();
+    });
+    Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
+});
