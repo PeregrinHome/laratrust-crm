@@ -34,8 +34,7 @@ class PermissionController extends Controller
             ->permissions
             ->filter($frd)
             ->orderby('name', 'ASC')
-            ->paginate($frd['perPage'] ?? $this->permissions->getPerPage())
-            ->appends($frd);
+            ->paginate($frd['perPage'] ?? $this->permissions->getPerPage());
 
         return view('permissions.index', compact('permissions', 'frd'));
     }
@@ -164,13 +163,32 @@ class PermissionController extends Controller
     }
     public function actionsDestroy(Request $request)
     {
-        $frd = $request->only('permissions');
+        $frd = $request->all();
 
         $this->permissions->destroy($frd['permissions']);
+
+        $frdSearch = [];
+        foreach ($frd as $key=>$value){
+            if($key !== '_method' && $key !== '_token' && $key !== 'permissions'){
+                $frdSearch[$key] = $value;
+            }
+        }
+        $frd = $frdSearch;
+        $permissions = $this
+            ->permissions
+            ->filter($frd)
+            ->orderby('name', 'ASC')
+            ->paginate($frd['perPage'] ?? $this->permissions->getPerPage());
+
+        $html = view('permissions.components._index', compact('permissions', 'frd'))->render();
 
         $flashMessage = [
             'type' => 'success',
             'text' => 'Разрешения успешно удалены.',
+            'replace' => [
+                'selector'=>'.js-index',
+                'html' => $html
+            ]
         ];
         $response = response()->json($flashMessage);
 

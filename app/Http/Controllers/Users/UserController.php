@@ -34,9 +34,7 @@ class UserController extends Controller
             ->users
             ->filter($frd)
             ->orderby('f_name', 'ASC')
-            ->paginate($frd['perPage'] ?? $this->users->getPerPage())
-            ->appends($frd);
-//        $users = $this->users->paginate(10);
+            ->paginate($frd['perPage'] ?? $this->users->getPerPage());
         return view('users.index', compact('users', 'frd'));
     }
 
@@ -214,6 +212,37 @@ class UserController extends Controller
         {
             $response = redirect()->back()->with(['flash_message' => $flashMessage]);
         }
+
+        return $response;
+    }
+
+    public function actionsDestroy(Request $request){
+        $frd = $request->all();
+
+        $this->users->destroy($frd['users']);
+
+        $frdSearch = [];
+        foreach ($frd as $key=>$value){
+            if($key !== '_method' && $key !== '_token' && $key !== 'users'){
+                $frdSearch[$key] = $value;
+            }
+        }
+        $frd = $frdSearch;
+        $users = $this
+            ->users
+            ->filter($frd)
+            ->orderby('f_name', 'ASC')
+            ->paginate($frd['perPage'] ?? $this->users->getPerPage());
+        $html = view('users.components._index', compact('users', 'frd'))->render();
+        $flashMessage = [
+            'type' => 'success',
+            'text' => 'Пользователи успешно удалены.',
+            'replace' => [
+                'selector'=>'.js-index',
+                'html' => $html
+            ]
+        ];
+        $response = response()->json($flashMessage);
 
         return $response;
     }

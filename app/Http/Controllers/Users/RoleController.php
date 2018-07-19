@@ -34,8 +34,7 @@ class RoleController extends Controller
             ->roles
             ->filter($frd)
             ->orderby('name', 'ASC')
-            ->paginate($frd['perPage'] ?? $this->roles->getPerPage())
-            ->appends($frd);
+            ->paginate($frd['perPage'] ?? $this->roles->getPerPage());
 
         return view('roles.index', compact('roles', 'frd'));
     }
@@ -158,13 +157,31 @@ class RoleController extends Controller
     }
     public function actionsDestroy(Request $request)
     {
-        $frd = $request->only('roles');
-
+        $frd = $request->all();
         $this->roles->destroy($frd['roles']);
 
+        $frdSearch = [];
+        foreach ($frd as $key=>$value){
+            if($key !== '_method' && $key !== '_token' && $key !== 'roles'){
+                $frdSearch[$key] = $value;
+            }
+        }
+        $frd = $frdSearch;
+
+        $roles = $this
+            ->roles
+            ->filter($frd)
+            ->orderby('name', 'ASC')
+            ->paginate($frd['perPage'] ?? $this->roles->getPerPage());
+
+        $html = view('roles.components._index', compact('roles', 'frd'))->render();
         $flashMessage = [
             'type' => 'success',
             'text' => 'Роли успешно удалены.',
+            'replace' => [
+                'selector'=>'.js-index',
+                'html' => $html
+            ]
         ];
         $response = response()->json($flashMessage);
 

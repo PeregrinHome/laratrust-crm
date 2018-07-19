@@ -24,30 +24,6 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Телефоны
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('phones.index') }}">Список</a>
-{{--                        @if(!Auth::user()->can(['admin']))--}}
-                            <a class="dropdown-item" href="{{ route('phones.create') }}">Создать</a>
-                        {{--@endif--}}
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Посты
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('posts.index') }}">Список</a>
-{{--                        @if(!Auth::user()->can(['admin']))--}}
-                            <a class="dropdown-item" href="{{ route('posts.create') }}">Создать</a>
-                        {{--@endif--}}
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Роли
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">

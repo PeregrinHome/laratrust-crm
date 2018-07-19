@@ -2,6 +2,7 @@
 
 namespace App\Models\Users;
 
+use App\Models\Post;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laratrust\Traits\LaratrustUserTrait;
@@ -131,5 +132,9 @@ class User extends Authenticatable
         });
 
         return $query;
+    }
+
+    public function getPosts(){
+        return $this->hasMany(Post::class);
     }
 }

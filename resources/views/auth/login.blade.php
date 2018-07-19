@@ -8,9 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                    {!! Form::open(['route' => 'login', 'method' => 'POST']) !!}
 
                         <div class="form-group row">
                             <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail</label>
@@ -45,7 +43,7 @@
                                 </a>
                             </div>
                         </div>
-                    </form>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

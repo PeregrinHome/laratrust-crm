@@ -75,14 +75,7 @@ module.exports = __webpack_require__(2);
 /* 1 */
 /***/ (function(module, exports) {
 
-$(function () {
-    $.ajaxSetup({
-        headers: {
-            'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-        }
-    });
-});
-$('form.js-ajax').on('submit', function (event) {
+var submitForm = function submitForm(event) {
     event.preventDefault();
 
     var formData = $(this).serialize(); // form data as string
@@ -100,12 +93,25 @@ $('form.js-ajax').on('submit', function (event) {
         data: formData,
         cache: false,
 
-        beforeSend: function beforeSend() {
-            console.log(formData);
-        },
+        beforeSend: function beforeSend() {},
 
         success: function success(data) {
             console.log(data);
+            if (!data) {
+                return;
+            }
+            if (data.text) {
+                if (data.type) {
+                    alertify.notify(data.text, data.type);
+                } else {
+                    alertify.message(data.text);
+                }
+            }
+            if (data.replace) {
+                $(data.replace.selector).html(data.replace.html);
+                unInit();
+                init();
+            }
         },
 
         error: function error() {}
@@ -114,8 +120,21 @@ $('form.js-ajax').on('submit', function (event) {
     // console.log(formData);
 
     return false; // prevent send form
-});
+};
+var init = function init() {
+    $('form.js-ajax').on('submit', submitForm);
+};
+var unInit = function unInit() {
+    $('form.js-ajax').unbind('submit', submitForm);
+};
+init();
+
 $('.js-mask-phone').mask('+0(000)000-00-00');
+
+$('.js-datepicker').datepicker({
+    format: "yyyy.mm.dd",
+    autoclose: true
+});
 
 /***/ }),
 /* 2 */
