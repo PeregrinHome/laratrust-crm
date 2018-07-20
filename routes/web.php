@@ -10,6 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Vsch\TranslationManager\Translator;
+
+\Route::group(['middleware' => 'web', 'prefix' => 'translations'], function () {
+    Translator::routes();
+});
 
 Route::group(['prefix' => \Mcamara\LaravelLocalization\Facades\LaravelLocalization::setLocale(), 'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]], function () {
     Route::get('/', function () {

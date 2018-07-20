@@ -15,7 +15,7 @@
                 <a class="btn btn-outline-secondary " href="{{ route('users.index') }}"
                    title="Очистить форму">Очистить</a>
             </div>
-            <button class="btn btn-primary mb-2" type="submit">@lang('administrator.Вперед!')</button>
+            <button class="btn btn-primary mb-2" type="submit">@lang('administrator.search')</button>
             {!! Form::close() !!}
         </div>
     </div>

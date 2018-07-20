@@ -13,6 +13,5 @@ return [
     |
     */
 
-    'Вперед!' => 'Go!',
-
+    'search'    => 'Search',
 ];

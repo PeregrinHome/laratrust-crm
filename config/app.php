@@ -168,6 +168,11 @@ return [
 
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         App\Providers\ConfigServiceProvider::class,
+
+        //Illuminate\Translation\TranslationServiceProvider::class,
+        Vsch\TranslationManager\ManagerServiceProvider::class,
+        Vsch\TranslationManager\TranslationServiceProvider::class,
+        //Vsch\UserPrivilegeMapper\UserPrivilegeMapperServiceProvider::class,
     ],
 
     /*
