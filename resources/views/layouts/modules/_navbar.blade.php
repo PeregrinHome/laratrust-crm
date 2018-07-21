@@ -14,31 +14,33 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Пользователи
+                        Администратор
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item disabled">Пользователи</span>
                         <a class="dropdown-item" href="{{ route('users.index') }}">Список</a>
                         <a class="dropdown-item" href="{{ route('users.create') }}">Создать</a>
-                    </div>
-                </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Роли
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-divider"></div>
+
+                        <span class="dropdown-item disabled">Роли</span>
                         <a class="dropdown-item" href="{{ route('roles.index') }}">Список</a>
                         <a class="dropdown-item" href="{{ route('roles.create') }}">Создать</a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <span class="dropdown-item disabled">Разрешение</span>
+                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Список</a>
+                        <a class="dropdown-item" href="{{ route('permissions.create') }}">Создать</a>
                     </div>
                 </li>
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Разрешение
+                        Редактор
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('permissions.index') }}">Список</a>
-                        <a class="dropdown-item" href="{{ route('permissions.create') }}">Создать</a>
+                        <a class="dropdown-item" href="{{ url('/translations/ui') }}">Языковые переменные</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

@@ -13,5 +13,5 @@ return [
     |
     */
 
-    'search'    => 'Search',
+    'search'    => 'Search!',
 ];
